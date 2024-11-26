@@ -14,6 +14,7 @@ The VEN&BEN program is a POS (Point-of-sale) System written entirely in C langua
 - Inventory Viewing and Management
 - ✨***estitik***✨
 
+![v&b-POS](https://github.com/Half-V/Programming-Finals-POS_project/raw/main/screenshot1.png)
 
 ## Compiling and Usage
 
