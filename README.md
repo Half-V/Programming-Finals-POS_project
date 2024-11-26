@@ -25,7 +25,7 @@ There are two ways in compiling this project:
         gcc main.c ASCII_ARTS.c -o [filename].exe
 
         # execute the output program in powershell
-        .\[filename].exe
+        ./[filename].exe
 ```
 2. Open the all the .c files in the Dev-C++ and then click "Compile & Run"
 
