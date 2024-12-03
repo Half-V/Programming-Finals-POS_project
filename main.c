@@ -16,6 +16,7 @@ int LOGIN_SCREEN();
 int WELCOME_ADMIN();
 int THANK_YOU();
 
+//GENERAL FUNCTIONS
 int logIn();
 void adminLogin();
 void userLogin();
@@ -35,7 +36,6 @@ char password[50];
 
 
 // PRODUCTS
-
 // Define a structure for products
 typedef struct {
     char name[50];
@@ -258,13 +258,13 @@ int salesProcessing() {
 
         switch (choice) {
             case 1:
-                system("cls"); addToCart(products, 5);
+                system("cls"); addToCart(products, totalProducts);
                 break;
             case 2:
-                system("cls"); removeFromCart(products, 5);
+                system("cls"); removeFromCart(products, totalProducts);
                 break;
             case 3:
-                system("cls"); checkout(products, 5);
+                system("cls"); checkout(products, totalProducts);
                 break;
             case 0:
                 system("cls");
@@ -289,7 +289,7 @@ void displayProducts() {
 
 
 // Function to add items to the cart
-void addToCart() {
+void addToCart(Product products[], int size) {
     int productNumber, amount;
     while (1) {
         displayProducts();
