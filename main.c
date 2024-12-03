@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <conio.h>
 #include <stdlib.h>
+#include <string.h>
 
 //Hardcoded credentials
 #define ADMIN_PASSWORD "admin123"
@@ -8,6 +9,27 @@
 
 //Outside functions
 #include "ASCII_ARTS.c"
+
+//ASCII Functions
+int TITLE_ASCII();
+int LOGIN_SCREEN();
+int WELCOME_ADMIN();
+int THANK_YOU();
+
+int logIn();
+void adminLogin();
+void userLogin();
+int aboutProgram();
+int isAdmin();
+int isNonAdmin();
+int productManagement();
+int inventoryManagement();
+int userManagement();
+int salesProcessing();
+void displayProducts();
+void addToCart();
+void removeFromCart();
+void checkout();
 
 char password[50];
 
@@ -54,8 +76,8 @@ int main() {
 			   "\t\t\t\t\t| [3] EXIT                  |\n"
 			   "\t\t\t\t\t ---------------------------\n"
                "\n\t\t\t\t\tSelect your number: "); 
-        scanf("%i", &choice); 
 
+        scanf("%i", &choice); 
         switch (choice) {
             case 1: system("cls"); logIn(); break;
             case 2: system("cls"); aboutProgram(); break;
@@ -357,6 +379,7 @@ void checkout(Product products[], int size) {
     	sumAmount += products[i].price * products[i].cart;
     	totalPrice += sumAmount;
         if (products[i].cart > 0) {
+        	printf("\t\t\t\t\t_____________________________________\n");
             printf("\n\t\t\t\t\tPHP %.2f - %s: %d\n", sumAmount, products[i].name, products[i].cart);
             hasItems = 1;
             sumAmount = 0;
@@ -370,6 +393,7 @@ void checkout(Product products[], int size) {
     } 
 	
 	else {
+		printf("\t\t\t\t\t_____________________________________\n");
     	printf("\n\t\t\t\t\tYOUR TOTAL AMOUNT IS: PHP %.2f\n", totalPrice);
     	printf("\n\t\t\t\t\tDo you want to checkout now? (Y or N): "); scanf("%s", &choice);
     	
