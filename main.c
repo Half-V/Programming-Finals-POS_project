@@ -16,18 +16,17 @@ int LOGIN_SCREEN();
 int WELCOME_ADMIN();
 int THANK_YOU();
 
-//GENERAL FUNCTIONS
+// Function prototypes
 int logIn();
 void adminLogin();
 void userLogin();
 int aboutProgram();
 int isAdmin();
 int isNonAdmin();
-int productManagement();
 int inventoryManagement();
-int userManagement();
 int salesProcessing();
 void displayProducts();
+void displayCart();
 void addToCart();
 void removeFromCart();
 void checkout();
@@ -158,7 +157,7 @@ int aboutProgram() {
 int isAdmin() {
 	
 	int choice;
-	while(choice!=5) {
+	while(choice!=3) {
 	
 	WELCOME_ADMIN();
 	printf("\n\t\t\tHi, Welcome to VEN&BEN Store POS System, How can I be of service?\n\n"
@@ -166,27 +165,19 @@ int isAdmin() {
 			   "\t\t\t\t\t ---------------------------\n"
 			   "\t\t\t\t\t| [1] Sales Transaction     |\n"
 			   "\t\t\t\t\t ---------------------------\n"
-               "\t\t\t\t\t ---------------------------\n"
-			   "\t\t\t\t\t| [2] Product Management    |\n"
+			   "\t\t\t\t\t ---------------------------\n"
+			   "\t\t\t\t\t| [2] Manage Inventory      |\n"
 			   "\t\t\t\t\t ---------------------------\n"
 			   "\t\t\t\t\t ---------------------------\n"
-			   "\t\t\t\t\t| [3] Inventory Managment   |\n"
-			   "\t\t\t\t\t ---------------------------\n"
-			   "\t\t\t\t\t ---------------------------\n"
-			   "\t\t\t\t\t| [4] User Management       |\n"
-			   "\t\t\t\t\t ---------------------------\n"
-			   "\t\t\t\t\t ---------------------------\n"
-			   "\t\t\t\t\t| [5] Logout                |\n"
+			   "\t\t\t\t\t| [3] Logout                |\n"
 			   "\t\t\t\t\t ---------------------------\n"
                "\n\t\t\t\t\tSelect your number: ");
 	scanf("%i", &choice); 
 			
             	switch (choice) {
                 case 1: system("cls"); salesProcessing(); break;
-                case 2: system("cls"); productManagement(); break;
-                case 3: system("cls"); inventoryManagement(); break;
-                case 4: system("cls"); userManagement(); break;
-                case 5: system("cls"); break;
+                case 2: system("cls"); inventoryManagement(); break;
+                case 3: system("cls"); break;
                 default: system("cls"); printf("\n\t\t\t\t\t    !!! INVALID INPUT !!!\n");
             	}
         } 	
@@ -199,7 +190,7 @@ int isNonAdmin() {
 	printf("\n\t\t\tHi, Welcome to VEN&BEN Store POS System, How can I be of service?\n\n"
                "\t\t\t\t\t   LOGGED IN AS: NON-ADMIN\n\n"
 			   "\t\t\t\t\t ---------------------------\n"
-			   "\t\t\t\t\t| [1] Sales Processing      |\n"
+			   "\t\t\t\t\t| [1] Sales Transaction     |\n"
 			   "\t\t\t\t\t ---------------------------\n"
                "\t\t\t\t\t ---------------------------\n"
 			   "\t\t\t\t\t| [2] View Inventory        |\n"
@@ -213,33 +204,21 @@ int isNonAdmin() {
 
 // SUB-MENU 
 
-int productManagement() {
-	printf("You have accessed product management!");
-	scanf("%i");
-}
-
 int inventoryManagement() {
 	printf("You have accessed inventory management!");
 	scanf("%i");
 }
 
-int userManagement() {
-	printf("You have accessed user management!");
-	scanf("%i");
-}
- 
-
 // --- SALES PROCESSING ---
-
-// Function prototypes
 
 int salesProcessing() {
 
     int choice;
     do {
         // Display the product list
-        displayProducts(products, 5);
-        printf("\n"
+        displayProducts();
+        displayCart();
+        printf("\n\n"
                "\t\t\t\t\t      SALES TRANSACTION\n"
 			   "\t\t\t\t\t ---------------------------\n"
 			   "\t\t\t\t\t| [1] Add to cart           |\n"
@@ -287,13 +266,29 @@ void displayProducts() {
     }
 }
 
+void displayCart() {
+	int i;
+	int noCart=1;
+	printf("\n\t\t\t\t    Items currently in cart:");
+	for (i = 0; i < totalProducts; i++) {
+		if (products[i].cart > 0) {
+			printf("\n\t\t\t\t    %d. %s [QTY: %d]", i+1, products[i].name, products[i].cart);
+			noCart=0;
+		}
+	}
+	if (noCart==1) {
+			printf("\n\t\t\t\t    !! NONE !!");
+		}	
+}
+
 
 // Function to add items to the cart
 void addToCart(Product products[], int size) {
     int productNumber, amount;
     while (1) {
         displayProducts();
-        printf("\n\t\t\tEnter product number to add to cart (\"0\" TO RETURN TO MENU): ");
+        displayCart();
+        printf("\n\n\t\t\tEnter product number to add to cart (\"0\" TO RETURN TO MENU): ");
         scanf("%d", &productNumber);
 
         if (productNumber == 0) {
@@ -322,7 +317,7 @@ void addToCart(Product products[], int size) {
             products[productNumber - 1].cart += amount;
             products[productNumber - 1].stock -= amount;
             system("cls");
-            printf("\n\t\t\t\t  Added %d %s to cart.\n", amount, products[productNumber - 1].name);
+            printf("\n\t\t\t\t    Added %d %s to cart.\n", amount, products[productNumber - 1].name);
         }
     }
 }
@@ -331,8 +326,9 @@ void addToCart(Product products[], int size) {
 void removeFromCart(Product products[], int size) {
     int productNumber, amount;
     while (1) {
-        displayProducts(products, size);
-        printf("\n\t\t\tEnter product number to remove from cart (\"0\" TO RETURN TO MENU): ");
+        displayProducts();
+        displayCart();
+        printf("\n\n\t\t\tEnter product number to remove from cart (\"0\" TO RETURN TO MENU): ");
         scanf("%d", &productNumber);
 
         if (productNumber == 0) {
@@ -408,7 +404,7 @@ void checkout(Product products[], int size) {
         		system("cls");
 			}
 			else {
-				printf("\n\t\t\t\t\tINSUFFICIENT BALANCE");
+				printf("\n\t\t\t\t\tINSUFFICIENT BALANCE, TRY AGAIN.");
 				getch();
 				system("cls");
 			}	
@@ -418,8 +414,11 @@ void checkout(Product products[], int size) {
 		}
 	}	
         // Reset cart after checkout
-        for (int i = 0; i < size; i++) {
+        if (payment>=totalPrice) {
+        	for (int i = 0; i < size; i++) {
             products[i].cart = 0;
-        }
+        	}
+		}
+        
     }
 
