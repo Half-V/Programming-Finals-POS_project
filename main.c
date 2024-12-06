@@ -6,6 +6,7 @@
 //Hardcoded credentials
 #define ADMIN_PASSWORD "admin123"
 #define USER_PASSWORD "user123"
+char password[50];
 
 //Outside functions
 #include "ASCII_ARTS.c"
@@ -16,14 +17,16 @@ int LOGIN_SCREEN();
 int WELCOME_ADMIN();
 int THANK_YOU();
 
-// Function prototypes
+// -- Function prototypes --
+// main_menu
 int logIn();
 void adminLogin();
 void userLogin();
 int aboutProgram();
 int isAdmin();
 int isNonAdmin();
-int inventoryManagement();
+
+// sales_processing
 int salesProcessing();
 void displayProducts();
 void displayCart();
@@ -31,7 +34,10 @@ void addToCart();
 void removeFromCart();
 void checkout();
 
-char password[50];
+// inventory_management
+void inventoryManagement();
+void changePrice();
+void changeStock(); 
 
 
 // PRODUCTS
@@ -143,7 +149,7 @@ void userLogin() {
 //ABOUT PROGRAM OPTION
 int aboutProgram() {
 	TITLE_ASCII();
-	printf("\n\t\t\t\t     VEN&BEN Store POS System Version 1.0"
+	printf("\n\t\t\t\t     VEN&BEN Store POS System Version 1.1"
 			"\n\n\t\t\t        VEN&BEN is a Point-of-sale System that process"
 			"\n\t\t\t        payments, manage sales and inventory. Designed"
 			" \n\t\t\t        to empower technopreneurship for every business.\n");
@@ -204,17 +210,12 @@ int isNonAdmin() {
 
 // SUB-MENU 
 
-int inventoryManagement() {
-	printf("You have accessed inventory management!");
-	scanf("%i");
-}
-
 // --- SALES PROCESSING ---
 
 int salesProcessing() {
 
     int choice;
-    do {
+    while (choice != 0) {
         // Display the product list
         displayProducts();
         displayCart();
@@ -252,9 +253,7 @@ int salesProcessing() {
                 printf("\n\t\t\t\t\tInvalid choice. Please try again.\n");
                 getch(); system("cls");
         }
-    } while (choice != 0);
-
-    return 0;
+    } 
 }
 
 // Function to display products and their stock
@@ -376,7 +375,7 @@ void checkout(Product products[], int size) {
     	totalPrice += sumAmount;
         if (products[i].cart > 0) {
         	printf("\t\t\t\t\t_____________________________________\n");
-            printf("\n\t\t\t\t\tPHP %.2f - %s: %d\n", sumAmount, products[i].name, products[i].cart);
+            printf("\n\t\t\t\t\tPHP %.2f - %s [QTY: %d]\n", sumAmount, products[i].name, products[i].cart);
             hasItems = 1;
             sumAmount = 0;
         }
@@ -422,3 +421,136 @@ void checkout(Product products[], int size) {
         
     }
 
+// -- INVENTORY MANAGEMENT --
+void inventoryManagement() {
+	int choice;
+	while (choice != 0) {
+    	displayProducts();
+    	printf("\n\n"
+               "\t\t\t\t\t    Inventory Management\n"
+			   "\t\t\t\t\t ---------------------------\n"
+			   "\t\t\t\t\t| [1] Change product price  |\n"
+			   "\t\t\t\t\t ---------------------------\n"
+               "\t\t\t\t\t ---------------------------\n"
+			   "\t\t\t\t\t| [2] Add to stock          |\n"
+			   "\t\t\t\t\t ---------------------------\n"
+			   "\t\t\t\t\t ---------------------------\n"
+			   "\t\t\t\t\t| [3] Remove from stock     |\n"
+			   "\t\t\t\t\t ---------------------------\n"
+			   "\t\t\t\t\t ---------------------------\n"
+			   "\t\t\t\t\t| [0] EXIT                  |\n"
+			   "\t\t\t\t\t ---------------------------\n"
+               "\n\t\t\t\t\tInput your number: ");
+        scanf("%d", &choice);
+    	
+    	switch(choice) {
+    		case 1: 
+				system("cls"); changePrice(products, totalProducts);
+				break;
+    	
+    		case 2: 
+				system("cls"); changeStock(products, totalProducts, 1);
+				break;
+    		case 3: 
+				system("cls"); changeStock(products, totalProducts, 2);
+				break;
+			case 0:
+				system("cls"); break;
+			default:
+				printf("\n\t\t\t\t\tInvalid choice. Please try again.\n");
+                getch(); system("cls"); 
+		}
+        		
+	}
+    	
+}	
+
+void changePrice(Product products[], int size) {
+	int productNumber;
+	while (1) {
+		displayProducts();
+		printf("\n\t\t\t    Select product number to change (\"0\" TO RETURN TO MENU): "); scanf("%d", &productNumber);
+		if (productNumber==0) {
+    		system("cls");
+    		break;
+		}
+		if (productNumber < 0 || productNumber > size) {
+			printf("\n\t\t\t\t    Invalid product number. Please try again.\n");
+            getch();
+            system("cls");
+            continue;
+		}
+		
+		else {
+			printf("\n\t\t\t    Insert new price: PHP ");
+			scanf("%d", &products[productNumber - 1].price);
+			system("cls");
+			printf("\n\t\t\t\t  Changed \"%s\" Price to: PHP %d\n", products[productNumber - 1].name, products[productNumber -1 ].price);
+		}
+	}
+}
+
+void changeStock(Product products[], int size, int select) {
+	int productNumber, appendStocks;
+	while (1) {
+		displayProducts();
+		if (select==1) {
+			printf("\n\t\t\t    Select product number to add stocks (\"0\" TO RETURN TO MENU): "); 
+			scanf("%d", &productNumber);
+			
+			if (productNumber==0) {
+    			system("cls");
+    			break;
+			}
+			
+			if (productNumber < 0 || productNumber > size) {
+				printf("\n\t\t\t\t    Invalid product number. Please try again.\n");
+            	getch();
+            	system("cls");
+            	continue;
+			}
+		
+			else {
+				printf("\n\t\t\t    Insert amount to add: ");
+				scanf("%d", &appendStocks);
+				products[productNumber - 1].stock += appendStocks;
+				system("cls");
+				printf("\n\t\t\t\t  Added %d stocks to \"%s\"\n", appendStocks, products[productNumber -1 ].name);
+			}
+		}
+		
+		else if (select==2) {
+			printf("\n\t\t\t    Select product number to remove stocks (\"0\" TO RETURN TO MENU): "); 
+			scanf("%d", &productNumber);
+			
+			if (productNumber==0) {
+    			system("cls");
+    			break;
+			}
+			
+			if (productNumber < 0 || productNumber > size) {
+				printf("\n\t\t\t\t    Invalid product number. Please try again.\n");
+            	getch();
+            	system("cls");
+            	continue;
+			}
+		
+			else {
+				printf("\n\t\t\t    Insert amount to remove: ");
+				scanf("%d", &appendStocks);
+				if (appendStocks > products[productNumber - 1].stock) {
+					printf("\n\t\t\t\t    Cannot remove more than available stock!");
+					getch();
+					system("cls");
+				}
+				else {
+					products[productNumber - 1].stock -= appendStocks;
+					system("cls");
+					printf("\n\t\t\t\t  Removed %d stocks from \"%s\"\n", appendStocks, products[productNumber -1 ].name);
+				}
+
+			}
+		}
+		
+	}
+}
