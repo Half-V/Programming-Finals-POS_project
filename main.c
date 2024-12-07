@@ -12,22 +12,23 @@ char password[50];
 #include "ASCII_ARTS.c"
 
 //ASCII Functions
-int TITLE_ASCII();
-int LOGIN_SCREEN();
-int WELCOME_ADMIN();
-int THANK_YOU();
+void TITLE_ASCII();
+void LOGIN_SCREEN();
+void WELCOME_ADMIN();
+void WELCOME_USER();
+void THANK_YOU();
 
 // -- Function prototypes --
 // main_menu
-int logIn();
+void logIn();
 void adminLogin();
 void userLogin();
-int aboutProgram();
-int isAdmin();
-int isNonAdmin();
+void aboutProgram();
+void isAdmin();
+void isNonAdmin();
 
 // sales_processing
-int salesProcessing();
+void salesProcessing();
 void displayProducts();
 void displayCart();
 void addToCart();
@@ -94,7 +95,7 @@ int main() {
     }
 
 // LOG-IN SYSTEM
-int logIn() {
+void logIn() {
 	
 	int choice;
 	while(choice!=3) {
@@ -138,7 +139,7 @@ void userLogin() {
     scanf("%s", password);
 
     if (strcmp(password, USER_PASSWORD) == 0) {
-        printf("User Login Successful! Welcome, User.\n");
+        system("cls"); isNonAdmin();
     } else {
         printf("\n\t\t\t\t\tIncorrect password. Access denied.\n");
         getch();  system("cls");
@@ -147,9 +148,9 @@ void userLogin() {
 
 
 //ABOUT PROGRAM OPTION
-int aboutProgram() {
+void aboutProgram() {
 	TITLE_ASCII();
-	printf("\n\t\t\t\t     VEN&BEN Store POS System Version 1.1"
+	printf("\n\t\t\t\t     VEN&BEN Store POS System Version 1.1.4"
 			"\n\n\t\t\t        VEN&BEN is a Point-of-sale System that process"
 			"\n\t\t\t        payments, manage sales and inventory. Designed"
 			" \n\t\t\t        to empower technopreneurship for every business.\n");
@@ -160,7 +161,7 @@ int aboutProgram() {
 
 // ADMIN AND NON-ADMIN MAIN MENU
 
-int isAdmin() {
+void isAdmin() {
 	
 	int choice;
 	while(choice!=3) {
@@ -181,20 +182,22 @@ int isAdmin() {
 	scanf("%i", &choice); 
 			
             	switch (choice) {
-                case 1: system("cls"); salesProcessing(); break;
-                case 2: system("cls"); inventoryManagement(); break;
-                case 3: system("cls"); break;
-                default: system("cls"); printf("\n\t\t\t\t\t    !!! INVALID INPUT !!!\n");
+                	case 1: system("cls"); salesProcessing(); break;
+                	case 2: system("cls"); inventoryManagement(); break;
+                	case 3: system("cls"); break;
+                	default: system("cls"); printf("\n\t\t\t\t\t    !!! INVALID INPUT !!!\n");
             	}
         } 	
     }
 
-int isNonAdmin() {
+void isNonAdmin() {
 	
 	int choice;
-    system("cls");
+	while (choice!=3) {
+		
+    WELCOME_USER();
 	printf("\n\t\t\tHi, Welcome to VEN&BEN Store POS System, How can I be of service?\n\n"
-               "\t\t\t\t\t   LOGGED IN AS: NON-ADMIN\n\n"
+               "\t\t\t\t\t     LOGGED IN AS: USER\n\n"
 			   "\t\t\t\t\t ---------------------------\n"
 			   "\t\t\t\t\t| [1] Sales Transaction     |\n"
 			   "\t\t\t\t\t ---------------------------\n"
@@ -205,14 +208,27 @@ int isNonAdmin() {
 			   "\t\t\t\t\t| [3] Logout                |\n"
 			   "\t\t\t\t\t ---------------------------\n"
                "\n\t\t\t\t\tInput your number: ");
-               scanf("%i", &choice);
-} 
-
+    scanf("%i", &choice);
+    
+    			switch (choice) {
+    				case 1: system("cls"); salesProcessing(); break;
+    				case 2: 
+						system("cls"); 
+						displayProducts();
+						printf("\n\t\t\t\t\t-- Press Anything to Exit --");
+						getch();
+						system("cls");
+						break;
+    				case 3: system("cls"); break;
+    				default: system("cls"); printf("\n\t\t\t\t\t    !!! INVALID INPUT !!!\n");
+				}
+	} 
+}
 // SUB-MENU 
 
 // --- SALES PROCESSING ---
 
-int salesProcessing() {
+void salesProcessing() {
 
     int choice;
     while (choice != 0) {
@@ -261,7 +277,13 @@ void displayProducts() {
     int i; 
     printf("\n\t\t\t\t    Products available:\n");
     for (i = 0; i < totalProducts; i++) {
-        printf("\t\t\t\t    [STOCK: %d] %d. %s (PHP %d)\n", products[i].stock , i+1, products[i].name, products[i].price);
+    	if (products[i].stock < 5) {
+    		printf("\t\t\t\t!!! [STOCK: %d] %d. %s (PHP %d)\n", products[i].stock , i+1, products[i].name, products[i].price);
+		}
+		else {
+			printf("\t\t\t\t    [STOCK: %d] %d. %s (PHP %d)\n", products[i].stock , i+1, products[i].name, products[i].price);
+		}
+        
     }
 }
 
