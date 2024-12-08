@@ -50,17 +50,28 @@ typedef struct {
     int cart;
 } Product;
 
-// Global product list
-Product products[5] = {
-    {"Chocolate Chips", 10, 25, 0},
-    {"Milk", 80, 30, 0},
-    {"Bread", 60, 20, 0},
-    {"Butter", 50, 15, 0},
-    {"Eggs", 70, 50, 0},
+// Total number of products
+int totalProducts = 15;
+// Product list
+Product products[15] = {
+    {"1KG Rice", 55, 25, 0},
+    {"Cooking Oil", 10, 30, 0},
+    {"Eggs", 10, 90, 0},
+    {"Bread", 65, 40, 0},
+    {"Canned Tuna", 35, 20, 0},
+    {"Canned Sardines", 25, 20, 0},
+    {"Canned Corned Beef", 76, 20, 0},
+    {"Chocolate Candy", 2, 20, 0},
+    {"Choco Mallows", 40, 20, 0},
+    {"Biscuit", 15, 15, 0},
+    {"Crackers", 10, 30, 0},
+    {"Potato Chips", 18, 50, 0},
+    {"Pancit Canton", 15, 50, 0},
+    {"Instant Cup Noodles", 22, 50, 0},
+    {"1L Coke Soft Drink", 60, 20, 0},
+    
 };
 
-// Total number of products
-int totalProducts = 5;
 
 
 // -- MAIN PROGRAM --
@@ -150,7 +161,7 @@ void userLogin() {
 //ABOUT PROGRAM OPTION
 void aboutProgram() {
 	TITLE_ASCII();
-	printf("\n\t\t\t\t     VEN&BEN Store POS System Version 1.1.4"
+	printf("\n\t\t\t\t     VEN&BEN Store POS System Version 1.1.5"
 			"\n\n\t\t\t        VEN&BEN is a Point-of-sale System that process"
 			"\n\t\t\t        payments, manage sales and inventory. Designed"
 			" \n\t\t\t        to empower technopreneurship for every business.\n");
@@ -277,7 +288,7 @@ void displayProducts() {
     int i; 
     printf("\n\t\t\t\t    Products available:\n");
     for (i = 0; i < totalProducts; i++) {
-    	if (products[i].stock < 5) {
+    	if (products[i].stock <= 5) {
     		printf("\t\t\t\t!!! [STOCK: %d] %d. %s (PHP %d)\n", products[i].stock , i+1, products[i].name, products[i].price);
 		}
 		else {
