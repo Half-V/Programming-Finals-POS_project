@@ -22,12 +22,12 @@ There are two ways in compiling this project:
  1. Compile all the .c files included in the source code into one .exe program: 
 ```bash
         # requires installation of MinGW for Windows
-        gcc main.c ASCII_ARTS.c -o [filename].exe
+        gcc main.c -o [filename].exe
 
-        # execute the output program in powershell
+        # execute the output program in the terminal/powershell
         ./[filename].exe
 ```
-2. Open the all the .c files in the Dev-C++ and then click "Compile & Run"
+2. Open the main.c file in Dev-C++ and then click "Compile & Run"
 
 
 ## Project Authors
